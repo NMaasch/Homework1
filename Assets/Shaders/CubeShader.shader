@@ -3,6 +3,8 @@
     Properties
     {
         _Color ("Color", Color) = (1, 1, 1, 1)
+        _AnimationSpeed("Animation Speed", Range(0,3)) =0
+        _OffsetSize("Offset Size", Range(0,10)) = 0
     }
     SubShader
     {
@@ -28,10 +30,14 @@
             };
 
             float4 _Color;
+            float _AnimationSpeed;
+            float _OffsetSize;
 
             v2f vert (appdata v)
             {
                 v2f o;
+                v.vertex.x +=sin(_Time.y * _AnimationSpeed + v.vertex.y * _OffsetSize);
+                v.vertex.z +=sin(_Time.y * _AnimationSpeed + v.vertex.y * _OffsetSize + .5);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 return o;
             }
@@ -39,7 +45,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
               
-                fixed4 col = fixed4(.006,.249,.224,1);
+                fixed4 col = _Color;
 
                 return col;
             }
